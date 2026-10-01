@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 from io import BytesIO
 
-st.image("logo1.JPG")
+st.image("logo1 .JPG")
 
 # =====================================
 # CẤU HÌNH TRANG
