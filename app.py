@@ -3,7 +3,7 @@ from datetime import datetime
 from io import BytesIO
 
 # Hiển thị ảnh trà sữa
-st.image("TRASUA.JPG")
+st.image("logo1 .JPG")
 
 # =====================================
 # CẤU HÌNH TRANG
