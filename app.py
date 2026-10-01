@@ -2,6 +2,8 @@ import streamlit as st
 from datetime import datetime
 from io import BytesIO
 
+st.image("logo1.JPG")
+
 # =====================================
 # CẤU HÌNH TRANG
 # =====================================
@@ -13,19 +15,13 @@ st.set_page_config(
 )
 
 # =====================================
-# LOGO QUÁN
-# =====================================
-
-st.image("logo1.JPG")
-
-# =====================================
 # TIÊU ĐỀ
 # =====================================
 
 st.title("🧋 MILK TEA SHOP")
 st.subheader("Hệ thống tính hóa đơn quán trà sữa")
 
-st.write("📍 Địa chỉ: 1119B Đại lộ Bình Dương")
+st.write("📍 Địa chỉ quán: 1119B Đại lộ Bình Dương")
 
 st.markdown("---")
 
@@ -67,20 +63,14 @@ TOPPINGS = {
 # THÔNG TIN KHÁCH HÀNG
 # =====================================
 
-st.header("👤 Thông tin khách hàng")
-
-phone = st.text_input(
-    "📱 Số điện thoại khách hàng"
-)
+phone = st.text_input("📱 Số điện thoại khách hàng")
 
 # =====================================
 # CHỌN NHIỀU MÓN
 # =====================================
 
-st.header("🥤 Chọn thức uống")
-
 selected_drinks = st.multiselect(
-    "Chọn món",
+    "🥤 Chọn thức uống",
     list(MENU.keys())
 )
 
@@ -103,17 +93,13 @@ for drink in selected_drinks:
     )
 
 # =====================================
-# MỨC ĐƯỜNG
+# ĐƯỜNG - ĐÁ
 # =====================================
 
 sugar = st.selectbox(
     "🍬 Mức độ đường",
     ["100%", "70%", "50%", "0%"]
 )
-
-# =====================================
-# MỨC ĐÁ
-# =====================================
 
 ice = st.selectbox(
     "🧊 Mức độ đá",
@@ -153,32 +139,27 @@ total += topping_price
 points = total // 10000
 
 # =====================================
-# HÓA ĐƠN TẠM TÍNH
+# HÓA ĐƠN
 # =====================================
 
 st.markdown("---")
-st.header("🧾 Hóa đơn")
+st.subheader("🧾 Hóa đơn")
 
-st.write("📍 Địa chỉ quán: 1119B Đại lộ Bình Dương")
 st.write("📱 Số điện thoại:", phone)
 
-if selected_drinks:
+for drink in selected_drinks:
 
-    st.subheader("Danh sách món")
+    size = drink_sizes[drink]
 
-    for drink in selected_drinks:
+    subtotal = (
+        MENU[drink] + SIZE_PRICE[size]
+    ) * drink_quantities[drink]
 
-        size = drink_sizes[drink]
-
-        subtotal = (
-            MENU[drink] + SIZE_PRICE[size]
-        ) * drink_quantities[drink]
-
-        st.write(
-            f"• {drink} | Size {size} | "
-            f"{drink_quantities[drink]} ly = "
-            f"{subtotal:,.0f} VNĐ"
-        )
+    st.write(
+        f"• {drink} | Size {size} | "
+        f"{drink_quantities[drink]} ly = "
+        f"{subtotal:,.0f} VNĐ"
+    )
 
 st.write("🍬 Mức đường:", sugar)
 st.write("🧊 Mức đá:", ice)
@@ -192,20 +173,19 @@ else:
     st.write("➕ Topping: Không")
 
 st.success(
-    f"💰 Tổng thanh toán: {total:,.0f} VNĐ"
+    f"💰 Tổng tiền: {total:,.0f} VNĐ"
 )
 
-if phone:
-    st.info(
-        f"⭐ Điểm tích lũy: {points} điểm"
-    )
+st.info(
+    f"⭐ Điểm tích lũy: {points} điểm"
+)
 
 # =====================================
 # CHATBOT
 # =====================================
 
 st.markdown("---")
-st.header("🤖 Chatbot hỗ trợ")
+st.subheader("🤖 Chatbot hỗ trợ")
 
 question = st.text_input(
     "Nhập câu hỏi của bạn"
@@ -217,32 +197,27 @@ if question:
 
     if "địa chỉ" in q:
         st.success(
-            "📍 Quán nằm tại 1119B Đại lộ Bình Dương."
+            "📍 Quán ở 1119B Đại lộ Bình Dương."
         )
 
     elif "giờ mở cửa" in q:
         st.success(
-            "⏰ Quán mở cửa từ 07:00 đến 22:00 mỗi ngày."
+            "⏰ Quán mở cửa từ 07:00 đến 22:00."
         )
 
     elif "size" in q:
         st.success(
-            "🥤 Quán có 3 size: S, M và L."
+            "🥤 Quán có size S, M và L."
         )
 
     elif "topping" in q:
         st.success(
-            "➕ Topping gồm: Trân châu đen, Trân châu trắng, Thạch trái cây, Pudding và Kem cheese."
-        )
-
-    elif "trà sữa" in q:
-        st.success(
-            "🧋 Các loại trà sữa hiện có trong menu đang hiển thị phía trên."
+            "➕ Topping gồm: Trân châu đen, Trân châu trắng, Thạch trái cây, Pudding, Kem cheese."
         )
 
     else:
         st.info(
-            "Xin lỗi, tôi chưa hiểu câu hỏi. Vui lòng liên hệ nhân viên để được hỗ trợ."
+            "Xin lỗi, tôi chưa hiểu câu hỏi."
         )
 
 # =====================================
@@ -252,16 +227,13 @@ if question:
 if st.button("💳 THANH TOÁN"):
 
     invoice = f"""
-========================================
-            MILK TEA SHOP
-========================================
-
+MILK TEA SHOP
 Địa chỉ: 1119B Đại lộ Bình Dương
 
 Thời gian:
 {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
 
-SĐT khách hàng:
+SĐT:
 {phone}
 
 DANH SÁCH MÓN:
@@ -290,15 +262,13 @@ Mức đá: {ice}
 Topping:
 {', '.join(selected_toppings) if selected_toppings else 'Không'}
 
-Tổng thanh toán:
+Tổng tiền:
 {total:,.0f} VNĐ
 
 Điểm tích lũy:
 {points} điểm
 
-========================================
-      CẢM ƠN QUÝ KHÁCH!
-========================================
+Cảm ơn quý khách!
 """
 
     file = BytesIO()
@@ -308,8 +278,8 @@ Tổng thanh toán:
     st.success("✅ Thanh toán thành công!")
 
     st.download_button(
-        label="📄 Tải hóa đơn",
+        "📄 Tải hóa đơn",
         data=file,
-        file_name=f"HoaDon_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+        file_name="HoaDon.txt",
         mime="text/plain"
     )
