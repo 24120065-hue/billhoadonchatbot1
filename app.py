@@ -1,5 +1,5 @@
 # ==============================
-# APP QUẢN LÝ HÓA ĐƠN TRÀ SỮA
+# APP THANH TOÁN QUÁN TRÀ SỮA
 # File: app.py
 # Chạy:
 # pip install streamlit pillow
@@ -24,20 +24,21 @@ st.set_page_config(
 # ==============================
 # LOGO QUÁN
 # ==============================
-if os.path.exists("logo.PNJ"):
-    logo = Image.open("logo.PNJ")
+if os.path.exists("logo.png"):
+    st.image("logo.png", width=120)
 
-    col1, col2 = st.columns([1, 4])
+st.title("🧋 MILK TEA SHOP")
+st.caption("Hệ thống thanh toán và xuất hóa đơn")
 
-    with col1:
-        st.image(logo, width=100)
-
-    with col2:
-        st.title("🧋 MILK TEA SHOP")
-        st.caption("Hệ thống thanh toán và xuất hóa đơn")
-else:
-    st.title("🧋 MILK TEA SHOP")
-    st.caption("Hệ thống thanh toán và xuất hóa đơn")
+# ==============================
+# ẢNH SẢN PHẨM
+# ==============================
+if os.path.exists("logo1.JPG"):
+    st.image(
+        "logo1.JPG",
+        caption="Trà sữa đặc biệt của quán",
+        use_container_width=True
+    )
 
 st.markdown("---")
 
@@ -47,7 +48,7 @@ st.markdown("---")
 MENU = {
     "Trà sữa truyền thống": 30000,
     "Trà sữa trân châu đường đen": 35000,
-    "Trà sữa matcha": 38000,
+    "Trà sữa Matcha": 38000,
     "Trà đào": 28000,
     "Trà vải": 28000,
     "Trà chanh": 25000,
@@ -94,7 +95,7 @@ quantity = st.number_input(
 )
 
 # ==============================
-# CHỌN ĐƯỜNG - ĐÁ
+# MỨC ĐƯỜNG - ĐÁ
 # ==============================
 col1, col2 = st.columns(2)
 
@@ -111,7 +112,7 @@ with col2:
     )
 
 # ==============================
-# CHỌN TOPPING
+# TOPPING
 # ==============================
 st.subheader("➕ Topping")
 
@@ -135,17 +136,16 @@ total_amount = unit_price * quantity
 
 # ==============================
 # TÍCH ĐIỂM
-# 1 điểm = 10.000 VNĐ
 # ==============================
 reward_points = total_amount // 10000
 
 # ==============================
-# HIỂN THỊ HÓA ĐƠN TẠM TÍNH
+# HÓA ĐƠN TẠM TÍNH
 # ==============================
 st.markdown("---")
 st.subheader("🧾 Hóa đơn tạm tính")
 
-st.write(f"**Khách hàng:** {phone if phone else 'Chưa nhập'}")
+st.write(f"**Số điện thoại:** {phone if phone else 'Chưa nhập'}")
 st.write(f"**Thức uống:** {drink}")
 st.write(f"**Số lượng:** {quantity}")
 st.write(f"**Mức đường:** {sugar}")
@@ -154,10 +154,9 @@ st.write(f"**Mức đá:** {ice}")
 if selected_toppings:
     topping_text = ", ".join(selected_toppings)
 else:
-    topping_text = "Không"
+    topping_text = "Không có"
 
 st.write(f"**Topping:** {topping_text}")
-
 st.write(f"**Đơn giá:** {unit_price:,.0f} VNĐ")
 
 st.success(
@@ -178,7 +177,7 @@ invoice_time = datetime.now().strftime(
 
 invoice_content = f"""
 ==========================================
-            MILK TEA SHOP
+              MILK TEA SHOP
 ==========================================
 
 THỜI GIAN:
@@ -226,9 +225,7 @@ if st.button("💳 THANH TOÁN"):
     st.success("✅ Thanh toán thành công!")
 
     invoice_file = BytesIO()
-    invoice_file.write(
-        invoice_content.encode("utf-8")
-    )
+    invoice_file.write(invoice_content.encode("utf-8"))
     invoice_file.seek(0)
 
     st.download_button(
