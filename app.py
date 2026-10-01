@@ -24,8 +24,8 @@ st.set_page_config(
 # ==============================
 # LOGO QUÁN
 # ==============================
-if os.path.exists("logo.png"):
-    logo = Image.open("logo.png")
+if os.path.exists("logo.PNJ"):
+    logo = Image.open("logo.PNJ")
 
     col1, col2 = st.columns([1, 4])
 
